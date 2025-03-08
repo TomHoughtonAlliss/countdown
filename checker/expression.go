@@ -42,6 +42,18 @@ func NewExpression(expr string) (expression, error) {
 	return e, nil
 }
 
+func Find(exprs []expression, n int) (int, bool) {
+	var dud int
+
+	for i, expr := range exprs {
+		if expr.result == n {
+			return i, true
+		}
+	}
+
+	return dud, false
+}
+
 func findOperator(expr string) (string, error) {
 	arr := helpers.StringToArray(expr)
 	for _, o := range operators {

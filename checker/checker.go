@@ -2,6 +2,7 @@ package checker
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/countdown/helpers"
 )
@@ -84,6 +85,24 @@ func (c *Checker) Reset() {
 	c.expressions = []expression{}
 }
 
-func (c *Checker) Unpack() string {
-	return ""
+func (c *Checker) ToString() string {
+	var recur = func(n int) string {
+		i, found := Find(c.expressions, n)
+
+		if !found {
+			return strconv.Itoa(n)
+		}
+
+		expr := c.expressions[i]
+
+		helpers.DeleteElt(c.expressions, i)
+
+		f := expr.first
+		s := expr.second
+		o := expr.operator
+
+		return fmt.Sprintf("(%v %v %v)", f, o, s)
+	}
+
+	return recur(c.target)
 }

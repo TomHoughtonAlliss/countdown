@@ -84,7 +84,7 @@ func check(p *numbers.Puzzle) error {
 
 				if solved {
 					done = true
-					fmt.Printf("%v = %v\n", p.Target, c.Unpack())
+					fmt.Printf("%v = %v\n", p.Target, c.ToString())
 				}
 			}
 		}

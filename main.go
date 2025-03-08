@@ -76,6 +76,9 @@ func check(p *numbers.Puzzle) error {
 			switch expr {
 			case "reset":
 				c.Reset()
+			case "next":
+				fmt.Print("\nSkipping\n\n")
+				return nil
 			default:
 				solved, err := c.Expression(expr)
 				if err != nil {
@@ -84,7 +87,9 @@ func check(p *numbers.Puzzle) error {
 
 				if solved {
 					done = true
+					fmt.Println()
 					fmt.Printf("%v = %v\n", p.Target, c.ToString())
+					fmt.Println()
 				}
 			}
 		}

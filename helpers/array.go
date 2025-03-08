@@ -27,3 +27,8 @@ func StringToArray(s string) []string {
 	}
 	return a
 }
+
+func Remove[T comparable](s []T, elt T) []T {
+	i := Index(s, elt)
+	return DeleteElt(s, i)
+}

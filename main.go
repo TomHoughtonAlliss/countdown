@@ -20,12 +20,12 @@ const (
 	// Interval of type [l, u).
 	targetLowerBound = 100
 	targetUpperBound = 1000
+
+	// A string for formatting errors in main.
+	errString = "ERROR: %v\n"
 )
 
 func main() {
-	errString := "ERROR: %v\n"
-	var done bool = false
-
 	c := numbers.NewConfig(
 		puzzleInput,
 		targetLowerBound,
@@ -34,14 +34,21 @@ func main() {
 
 	p, err := numbers.NewPuzzle(c)
 	if err != nil {
-		done = true
 		fmt.Printf(errString, fmt.Errorf("failed to create puzzle: %w", err))
+		return
 	}
+
+	puzzleLoop(&p)
+}
+
+func puzzleLoop(p *numbers.Puzzle) {
+	var done bool
+	var err error
 
 	for !done {
 		p.Print()
 
-		err = check(&p)
+		err = check(p)
 		if err != nil {
 			done = true
 			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
@@ -57,40 +64,34 @@ func main() {
 
 // check begins the while loop to allow a user to attempt the puzzle.
 func check(p *numbers.Puzzle) error {
-	scanner := bufio.NewScanner(os.Stdin)
 
 	c := checker.NewChecker(
 		p.Numbers,
 		p.Target,
 	)
 
-	done := false
+	err := solvingLoop(&c)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func solvingLoop(c *checker.Checker) error {
+	var done bool
+	var err error
+	scanner := bufio.NewScanner(os.Stdin)
+
 	for !done {
 		fmt.Println()
 		c.Print()
 		fmt.Print("> ")
 
 		if scanner.Scan() {
-			expr := scanner.Text()
-
-			switch expr {
-			case "reset":
-				c.Reset()
-			case "next":
-				fmt.Print("\nSkipping\n\n")
-				return nil
-			default:
-				solved, err := c.Expression(expr)
-				if err != nil {
-					return fmt.Errorf("failed to parse expression: %w", err)
-				}
-
-				if solved {
-					done = true
-					fmt.Println()
-					fmt.Printf("%v = %v\n", p.Target, c.ToString())
-					fmt.Println()
-				}
+			done, err = c.HandleInput(scanner.Text())
+			if err != nil {
+				return fmt.Errorf("error occured on input: %w", err)
 			}
 		}
 	}

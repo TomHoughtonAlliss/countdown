@@ -39,7 +39,7 @@ func (c *Checker) Print() {
 	fmt.Printf("Available:\t%v\n", helpers.CommaSeparate(c.current))
 }
 
-func (c *Checker) Expression(expr string) (bool, error) {
+func (c *Checker) Expression(expr string) (solved bool, err error) {
 	e, err := NewExpression(expr)
 	if err != nil {
 		return false, fmt.Errorf("failed to create expression: %w", err)
@@ -83,6 +83,7 @@ func (c *Checker) Reset() {
 	c.expressions = []expression{}
 }
 
+// ToString recurs on our expressions to fully expand our target into the initial values, in the structure given by the user.
 func (c *Checker) ToString() string {
 	var recur func(int) string
 	recur = func(n int) string {
@@ -106,4 +107,36 @@ func (c *Checker) ToString() string {
 	equation := recur(c.target)
 
 	return equation[1 : len(equation)-1]
+}
+
+func (c *Checker) HandleInput(input string) (done bool, err error) {
+	// TODO break this down more
+	switch input {
+	case "reset":
+		c.Reset()
+	case "next":
+		fmt.Print("\nSkipping\n\n")
+		done = true
+	default:
+		solved, err := c.Expression(input)
+		if err != nil {
+			return true, fmt.Errorf("failed to parse expression: %w", err)
+		}
+
+		done = c.HandleSolve(solved)
+	}
+
+	return done, err
+}
+
+func (c *Checker) HandleSolve(solved bool) bool {
+	if !solved {
+		return false
+	}
+
+	fmt.Println()
+	fmt.Printf("%v = %v\n", c.target, c.ToString())
+	fmt.Println()
+
+	return solved
 }

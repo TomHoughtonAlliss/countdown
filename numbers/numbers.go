@@ -11,6 +11,7 @@ type getter func() (int, error)
 
 // Puzzle stores an array of numbers and the target value.
 type Puzzle struct {
+	input   string
 	Numbers []int
 	Target  int
 }
@@ -31,6 +32,7 @@ func NewPuzzle(input string) (Puzzle, error) {
 	}
 
 	p := Puzzle{
+		input:   input,
 		Numbers: nums,
 		Target:  newTarget(),
 	}
@@ -38,11 +40,24 @@ func NewPuzzle(input string) (Puzzle, error) {
 	return p, nil
 }
 
+// Uses the original input to create and set a new puzzle.
+func (p *Puzzle) Refresh() error {
+	nums, err := parseInput(p.input)
+	if err != nil {
+		return fmt.Errorf("failed to parse numbers: %w", err)
+	}
+
+	p.Numbers = nums
+	p.Target = newTarget()
+
+	return nil
+}
+
 // parseInput iterates over input and gets a new value for each character.
 //
-//  - For an S get a small number.
+//   - For an S get a small number.
 //
-//  - For an L get a large number.
+//   - For an L get a large number.
 //
 // It will error if it encounters a character of neither S nor L.
 func parseInput(input string) ([]int, error) {

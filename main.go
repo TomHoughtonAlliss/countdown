@@ -8,13 +8,25 @@ import (
 	"github.com/countdown/numbers"
 )
 
-const puzzleInput = "LSSSSS"
+const (
+	puzzleInput = "LSSSSS"
+
+	// Interval of type [l, u).
+	targetLowerBound = 100
+	targetUpperBound = 1000
+)
 
 func main() {
 	errString := "ERROR: %v\n"
 	var done bool = false
 
-	p, err := numbers.NewPuzzle(puzzleInput)
+	c := numbers.NewConfig(
+		puzzleInput,
+		targetLowerBound,
+		targetUpperBound,
+	)
+
+	p, err := numbers.NewPuzzle(c)
 	if err != nil {
 		done = true
 		fmt.Printf(errString, fmt.Errorf("failed to create puzzle: %w", err))

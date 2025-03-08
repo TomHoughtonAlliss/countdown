@@ -1,33 +1,26 @@
 package numbers
 
 import (
-	"errors"
 	"fmt"
 )
-
-const expectedLength = 6
 
 type getter func() (int, error)
 
 // NewPuzzle converts puzzle input to a puzzle object.
 //
 // input string must contain only L or S and be of the expected length.
-func NewPuzzle(input string) (Puzzle, error) {
+func NewPuzzle(c Config) (Puzzle, error) {
 	var dud Puzzle
 
-	if len(input) != expectedLength {
-		return dud, errors.New("puzzle input must have a length of 6")
-	}
-
-	nums, err := parseInput(input)
+	nums, err := parseInput(c.Input)
 	if err != nil {
 		return dud, fmt.Errorf("failed to parse numbers: %w", err)
 	}
 
 	p := Puzzle{
-		input:   input,
+		config:  c,
 		Numbers: nums,
-		Target:  newTarget(),
+		Target:  newTarget(c),
 	}
 
 	return p, nil
@@ -43,7 +36,7 @@ func NewPuzzle(input string) (Puzzle, error) {
 func parseInput(input string) ([]int, error) {
 	var dud []int
 
-	nums := make([]int, expectedLength)
+	nums := make([]int, len(input))
 	small := newSmallGetter()
 	large := newLargeGetter()
 

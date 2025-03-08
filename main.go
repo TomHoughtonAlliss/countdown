@@ -39,34 +39,23 @@ func main() {
 	}
 
 	for !done {
-		err := restart(&p)
-		if err != nil {
-			done = true
-			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
-		}
+		p.Print()
 
 		err = check(&p)
 		if err != nil {
 			done = true
 			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
 		}
+
+		err := p.Refresh()
+		if err != nil {
+			done = true
+			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
+		}
 	}
 }
 
-// restart prints the current instance of p, and then refreshes it for the next round.
-func restart(p *numbers.Puzzle) error {
-	fmt.Println("Countdown Numbers")
-
-	p.Print()
-
-	err := p.Refresh()
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
+// check begins the while loop to allow a user to attempt the puzzle.
 func check(p *numbers.Puzzle) error {
 	scanner := bufio.NewScanner(os.Stdin)
 

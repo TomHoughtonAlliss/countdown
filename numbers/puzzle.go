@@ -29,6 +29,6 @@ func (p *Puzzle) Refresh() error {
 // Puzzle.Print gives a nice output of the current puzzle.
 func (p *Puzzle) Print() {
 	strNums := helpers.CommaSeparate(p.Numbers)
-
+	fmt.Println("Numbers Puzzle")
 	fmt.Printf("%v -> %v\n", strNums, p.Target)
 }

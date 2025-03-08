@@ -16,24 +16,26 @@ type Checker struct {
 	current []int
 
 	// expressions store the strings used to reach each value.
-	expressions map[int]string
+	expressions []expression
 
 	// target is the value we're aiming for.
 	target int
 }
 
 func NewChecker(n []int, t int) Checker {
+	new := make([]int, len(n))
+	copy(new, n)
 	return Checker{
 		original:    n,
-		current:     n,
-		expressions: map[int]string{},
+		current:     new,
+		expressions: []expression{},
 		target:      t,
 	}
 }
 
 func (c *Checker) Print() {
-	fmt.Printf("Target: %v\n", c.target)
-	fmt.Printf("Available: %v\n", helpers.CommaSeparate(c.current))
+	fmt.Printf("Target:\t\t%v\n", c.target)
+	fmt.Printf("Available:\t%v\n", helpers.CommaSeparate(c.current))
 }
 
 func (c *Checker) Expression(expr string) (bool, error) {
@@ -63,5 +65,25 @@ func (c *Checker) Expression(expr string) (bool, error) {
 
 	c.current = append(c.current, res)
 
+	// insert into our map.
+
+	e.result = res
+
+	c.expressions = append(c.expressions, e)
+
 	return false, nil
+}
+
+// Checker.Reset sets all values to their inital configuration.
+func (c *Checker) Reset() {
+	new := make([]int, len(c.original))
+
+	copy(new, c.original)
+
+	c.current = new
+	c.expressions = []expression{}
+}
+
+func (c *Checker) Unpack() string {
+	return ""
 }

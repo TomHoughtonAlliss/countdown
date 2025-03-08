@@ -66,7 +66,7 @@ func check(p *numbers.Puzzle) error {
 
 	done := false
 	for !done {
-
+		fmt.Println()
 		c.Print()
 		fmt.Print("> ")
 
@@ -75,16 +75,16 @@ func check(p *numbers.Puzzle) error {
 
 			switch expr {
 			case "reset":
-				// reset the checker
+				c.Reset()
 			default:
 				solved, err := c.Expression(expr)
 				if err != nil {
 					return fmt.Errorf("failed to parse expression: %w", err)
 				}
-	
+
 				if solved {
 					done = true
-					// Print the expressions here
+					fmt.Printf("%v = %v\n", p.Target, c.Unpack())
 				}
 			}
 		}

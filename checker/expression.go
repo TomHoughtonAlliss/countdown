@@ -16,7 +16,7 @@ type expression struct {
 	first    int
 	second   int
 	operator string
-	original string
+	result   int
 }
 
 func NewExpression(expr string) (expression, error) {
@@ -36,7 +36,7 @@ func NewExpression(expr string) (expression, error) {
 		first:    first,
 		second:   second,
 		operator: op,
-		original: expr,
+		result:   0,
 	}
 
 	return e, nil

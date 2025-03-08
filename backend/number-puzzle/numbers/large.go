@@ -4,7 +4,7 @@ import (
 	"errors"
 	"math/rand"
 
-	"github.com/countdown/helpers"
+	"github.com/countdown/number-puzzle/helpers"
 )
 
 var largeNums []int = []int{25, 50, 75, 100}

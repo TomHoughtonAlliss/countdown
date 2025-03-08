@@ -3,7 +3,7 @@ package numbers
 import (
 	"fmt"
 
-	"github.com/countdown/helpers"
+	"github.com/countdown/number-puzzle/helpers"
 )
 
 // Puzzle stores an array of usable numbers, the target value, and the configuration used to build this instance.

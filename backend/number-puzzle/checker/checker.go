@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/countdown/helpers"
+	"github.com/countdown/number-puzzle/helpers"
 )
 
 // Checker is used to check a user's mathematical steps to reach the final answer.

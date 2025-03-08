@@ -10,26 +10,19 @@ import (
 )
 
 const (
-	// The arrangement of Large and Small numbers in puzzle input.
-	//
-	// Can have at most 4 Large.
-	//
-	// Default is 6 characters long.
-	puzzleInput = "LSSSSS"
-
-	// Interval of type [l, u).
-	targetLowerBound = 100
-	targetUpperBound = 1000
-
 	// A string for formatting errors in main.
 	errString = "ERROR: %v\n"
 )
 
+func init() {
+
+}
+
 func main() {
 	c := numbers.NewConfig(
-		puzzleInput,
-		targetLowerBound,
-		targetUpperBound,
+		"LSSSSS",
+		100,
+		1000,
 	)
 
 	p, err := numbers.NewPuzzle(c)

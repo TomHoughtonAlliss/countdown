@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/countdown/helpers"
+	"github.com/countdown/number-puzzle/helpers"
 )
 
 var (

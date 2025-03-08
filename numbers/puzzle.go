@@ -8,7 +8,7 @@ import (
 
 // Puzzle stores an array of numbers and the target value.
 type Puzzle struct {
-	config Config
+	config  Config
 	Numbers []int
 	Target  int
 }

@@ -3,7 +3,8 @@ package numbers
 import (
 	"errors"
 	"math/rand"
-	"slices"
+
+	"github.com/countdown/helpers"
 )
 
 var largeNums []int = []int{25, 50, 75, 100}
@@ -22,16 +23,10 @@ func newLargeGetter() getter {
 
 		i := rand.Intn(len(n))
 		num := n[i]
-		n = deleteElt(n, i)
+		n = helpers.DeleteElt(n, i)
 
 		return num, nil
 	}
 
 	return g
-}
-
-// deleteElt is a wrapper on slices.Delete, to avoid having to call it with two indexes.
-func deleteElt[T any](s []T, i int) []T {
-	j := i + 1
-	return slices.Delete(s, i, j)
 }

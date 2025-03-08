@@ -14,8 +14,8 @@ type Checker struct {
 	// original stores the original input values, so we can reset the Checker at any time.
 	original []int
 
-	// current stores the current usable values, so the progress at any point is stored here.
-	current []int
+	// usable stores the usable usable values, so the progress at any point is stored here.
+	usable []int
 
 	// expressions store the strings used to reach each value.
 	expressions []expression
@@ -30,7 +30,7 @@ func NewChecker(n []int, t int) Checker {
 	copy(new, n)
 	return Checker{
 		original:    n,
-		current:     new,
+		usable:      new,
 		expressions: []expression{},
 		target:      t,
 	}
@@ -39,7 +39,7 @@ func NewChecker(n []int, t int) Checker {
 // Checker.Print gives the current puzzle instance, with up-to-date usable numbers.
 func (c *Checker) Print() {
 	fmt.Printf("Target:\t\t%v\n", c.target)
-	fmt.Printf("Available:\t%v\n", helpers.CommaSeparate(c.current))
+	fmt.Printf("Available:\t%v\n", helpers.CommaSeparate(c.usable))
 }
 
 // Checker.Expression takes a string (e.g. 5 + 6) and handles it.
@@ -66,17 +66,17 @@ func (c *Checker) Expression(expr string) (solved bool, exprErr error, err error
 		return true, nil, nil
 	}
 
-	c.current, err = helpers.Remove(c.current, e.first)
+	c.usable, err = helpers.Remove(c.usable, e.first)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to remove element: %w", err)
 	}
 
-	c.current, err = helpers.Remove(c.current, e.second)
+	c.usable, err = helpers.Remove(c.usable, e.second)
 	if err != nil {
 		return false, nil, fmt.Errorf("failed to remove element: %w", err)
 	}
 
-	c.current = append(c.current, res)
+	c.usable = append(c.usable, res)
 
 	return false, nil, nil
 }
@@ -87,7 +87,7 @@ func (c *Checker) Reset() {
 
 	copy(new, c.original)
 
-	c.current = new
+	c.usable = new
 	c.expressions = []expression{}
 }
 

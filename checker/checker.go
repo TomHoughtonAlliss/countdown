@@ -103,5 +103,7 @@ func (c *Checker) ToString() string {
 		return fmt.Sprintf("(%v %v %v)", f, o, s)
 	}
 
-	return recur(c.target)
+	equation := recur(c.target)
+
+	return equation[1 : len(equation)-1]
 }

@@ -38,6 +38,13 @@ func NewPuzzle(input string) (Puzzle, error) {
 	return p, nil
 }
 
+// parseInput iterates over input and gets a new value for each character.
+//
+//  - For an S get a small number.
+//
+//  - For an L get a large number.
+//
+// It will error if it encounters a character of neither S nor L.
 func parseInput(input string) ([]int, error) {
 	var dud []int
 

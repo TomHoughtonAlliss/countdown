@@ -47,15 +47,15 @@ func parseInput(input string) ([]int, error) {
 	small := newSmallGetter()
 	large := newLargeGetter()
 
-	for _, c := range input {
-		var i int
+	for i, c := range input {
+		var n int
 		var err error
 
 		switch c {
 		case 'L':
-			i, err = small()
+			n, err = large()
 		case 'S':
-			i, err = large()
+			n, err = small()
 		default:
 			return dud, fmt.Errorf("unexpected character in input %v", c)
 		}
@@ -64,7 +64,7 @@ func parseInput(input string) ([]int, error) {
 			return dud, fmt.Errorf("failed to build input: %w", err)
 		}
 
-		nums = append(nums, i)
+		nums[i] = n
 	}
 
 	return nums, nil

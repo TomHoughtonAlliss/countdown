@@ -50,6 +50,10 @@ func (c *Checker) Expression(expr string) (bool, error) {
 		return false, fmt.Errorf("failed to compute: %w", err)
 	}
 
+	e.result = res
+
+	c.expressions = append(c.expressions, e)
+
 	if res == c.target {
 		return true, nil
 	}
@@ -66,12 +70,6 @@ func (c *Checker) Expression(expr string) (bool, error) {
 
 	c.current = append(c.current, res)
 
-	// insert into our map.
-
-	e.result = res
-
-	c.expressions = append(c.expressions, e)
-
 	return false, nil
 }
 
@@ -86,7 +84,8 @@ func (c *Checker) Reset() {
 }
 
 func (c *Checker) ToString() string {
-	var recur = func(n int) string {
+	var recur func(int) string
+	recur = func(n int) string {
 		i, found := Find(c.expressions, n)
 
 		if !found {
@@ -95,10 +94,10 @@ func (c *Checker) ToString() string {
 
 		expr := c.expressions[i]
 
-		helpers.DeleteElt(c.expressions, i)
+		c.expressions = helpers.DeleteElt(c.expressions, i)
 
-		f := expr.first
-		s := expr.second
+		f := recur(expr.first)
+		s := recur(expr.second)
 		o := expr.operator
 
 		return fmt.Sprintf("(%v %v %v)", f, o, s)

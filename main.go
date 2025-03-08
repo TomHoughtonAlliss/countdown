@@ -9,6 +9,11 @@ import (
 )
 
 const (
+	// The arrangement of Large and Small numbers in puzzle input.
+	//
+	// Can have at most 4 Large.
+	//
+	// Default is 6 characters long.
 	puzzleInput = "LSSSSS"
 
 	// Interval of type [l, u).

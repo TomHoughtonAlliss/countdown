@@ -31,6 +31,7 @@ func newLargeGetter() getter {
 	return g
 }
 
+// deleteElt is a wrapper on slices.Delete, to avoid having to call it with two indexes.
 func deleteElt[T any](s []T, i int) []T {
 	j := i + 1
 	return slices.Delete(s, i, j)

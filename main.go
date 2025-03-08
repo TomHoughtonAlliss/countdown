@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/countdown/checker"
 	"github.com/countdown/numbers"
 )
 
@@ -37,22 +38,23 @@ func main() {
 		fmt.Printf(errString, fmt.Errorf("failed to create puzzle: %w", err))
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
-
 	for !done {
-		err := loop(&p)
+		err := restart(&p)
 		if err != nil {
+			done = true
 			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
 		}
 
-		// Used exclusively to wait on user input before the next round.
-		fmt.Println("")
-		scanner.Scan()
+		err = check(&p)
+		if err != nil {
+			done = true
+			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
+		}
 	}
 }
 
-// loop prints the current instance of p, and then refreshes it for the next round.
-func loop(p *numbers.Puzzle) error {
+// restart prints the current instance of p, and then refreshes it for the next round.
+func restart(p *numbers.Puzzle) error {
 	fmt.Println("Countdown Numbers")
 
 	p.Print()
@@ -60,6 +62,31 @@ func loop(p *numbers.Puzzle) error {
 	err := p.Refresh()
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func check(p *numbers.Puzzle) error {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	c := checker.NewChecker(
+		p.Numbers,
+		p.Target,
+	)
+
+	done := false
+	for !done {
+		fmt.Print("> ")
+		if scanner.Scan() {
+			expr := scanner.Text()
+			fmt.Println(expr)
+			err := c.Expression(expr)
+			if err != nil {
+				return fmt.Errorf("failed to parse expression: %w", err)
+			}
+		}
+		c.Print()
 	}
 
 	return nil

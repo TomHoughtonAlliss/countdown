@@ -2,8 +2,8 @@ package numbers
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
+
+	"github.com/countdown/helpers"
 )
 
 // Puzzle stores an array of numbers and the target value.
@@ -28,12 +28,7 @@ func (p *Puzzle) Refresh() error {
 
 // Puzzle.Print gives a nice output of the current puzzle.
 func (p *Puzzle) Print() {
-	strNums := make([]string, len(p.Numbers))
-	for i, n := range p.Numbers {
-		s := strconv.Itoa(n)
+	strNums := helpers.CommaSeparate(p.Numbers)
 
-		strNums[i] = s
-	}
-
-	fmt.Printf("%v -> %v\n", strings.Join(strNums, ", "), p.Target)
+	fmt.Printf("%v -> %v\n", strNums, p.Target)
 }

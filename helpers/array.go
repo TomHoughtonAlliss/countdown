@@ -18,3 +18,12 @@ func Index[T comparable](s []T, elt T) int {
 
 	return -1
 }
+
+// StringToArray turns a string value into an array of single-character strings.
+func StringToArray(s string) []string {
+	a := make([]string, len(s))
+	for i, c := range s {
+		a[i] = string(c)
+	}
+	return a
+}

@@ -36,32 +36,32 @@ func (c *Checker) Print() {
 	fmt.Printf("Available: %v\n", helpers.CommaSeparate(c.current))
 }
 
-func (c *Checker) Expression(expr string) error {
+func (c *Checker) Expression(expr string) (bool, error) {
 	e, err := NewExpression(expr)
 	if err != nil {
-		return fmt.Errorf("failed to create expression: %w", err)
+		return false, fmt.Errorf("failed to create expression: %w", err)
 	}
 
 	res, err := e.compute()
 	if err != nil {
-		return fmt.Errorf("failed to compute: %w", err)
+		return false, fmt.Errorf("failed to compute: %w", err)
 	}
 
 	if res == c.target {
-		// target reached, do something
+		return true, nil
 	}
 
 	c.current, err = helpers.Remove(c.current, e.first)
 	if err != nil {
-		return fmt.Errorf("failed to remove element: %w", err)
+		return false, fmt.Errorf("failed to remove element: %w", err)
 	}
 
 	c.current, err = helpers.Remove(c.current, e.second)
 	if err != nil {
-		return fmt.Errorf("failed to remove element: %w", err)
+		return false, fmt.Errorf("failed to remove element: %w", err)
 	}
 
 	c.current = append(c.current, res)
 
-	return nil
+	return false, nil
 }

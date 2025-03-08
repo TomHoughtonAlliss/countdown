@@ -66,16 +66,28 @@ func check(p *numbers.Puzzle) error {
 
 	done := false
 	for !done {
+
+		c.Print()
 		fmt.Print("> ")
+
 		if scanner.Scan() {
 			expr := scanner.Text()
-			fmt.Println(expr)
-			err := c.Expression(expr)
-			if err != nil {
-				return fmt.Errorf("failed to parse expression: %w", err)
+
+			switch expr {
+			case "reset":
+				// reset the checker
+			default:
+				solved, err := c.Expression(expr)
+				if err != nil {
+					return fmt.Errorf("failed to parse expression: %w", err)
+				}
+	
+				if solved {
+					done = true
+					// Print the expressions here
+				}
 			}
 		}
-		c.Print()
 	}
 
 	return nil

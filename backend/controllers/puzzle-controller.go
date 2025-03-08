@@ -2,30 +2,19 @@ package controllers
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/countdown/number-puzzle/numbers"
+	"github.com/countdown/utils"
 	"github.com/labstack/echo/v4"
 )
 
 func GetPuzzle(c echo.Context) error {
-	type puzzleRequest struct {
-		Choices string `json:"choices"`
-		Lower   int    `json:"lowerBound"`
-		Upper   int    `json:"upperBound"`
-	}
-
-	var config puzzleRequest
-	err := c.Bind(&config)
+	config, err := utils.CreateConfig(c)
 	if err != nil {
-		return c.String(http.StatusBadRequest, "bad request")
+		return fmt.Errorf("failed to create config: %w", err)
 	}
 
-	p, err := numbers.NewPuzzle(numbers.NewConfig(
-		config.Choices,
-		config.Lower,
-		config.Upper,
-	))
+	p, err := numbers.NewPuzzle(config)
 	if err != nil {
 		return fmt.Errorf("failed to create puzzle: %w", err)
 	}

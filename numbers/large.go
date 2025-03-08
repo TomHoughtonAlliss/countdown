@@ -2,7 +2,6 @@ package numbers
 
 import (
 	"errors"
-	"fmt"
 	"math/rand"
 	"slices"
 )
@@ -18,13 +17,13 @@ func newLargeGetter() getter {
 
 	var g getter = func() (int, error) {
 		if len(n) == 0 {
-			return 0, errors.New("large number set empty")
+			return 0, errors.New("too many large numbers used")
 		}
 
 		i := rand.Intn(len(n))
 		num := n[i]
 		n = deleteElt(n, i)
-		fmt.Printf("length: %v\tcontents: %v\n", len(n), n)
+
 		return num, nil
 	}
 

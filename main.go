@@ -45,6 +45,7 @@ func main() {
 			fmt.Printf(errString, fmt.Errorf("failed to generate next puzzle: %w", err))
 		}
 
+		// Used exclusively to wait on user input before the next round.
 		fmt.Println("")
 		scanner.Scan()
 	}

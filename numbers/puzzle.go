@@ -35,5 +35,5 @@ func (p *Puzzle) Print() {
 		strNums[i] = s
 	}
 
-	fmt.Printf("%v -> %v", strings.Join(strNums, ", "), p.Target)
+	fmt.Printf("%v -> %v\n", strings.Join(strNums, ", "), p.Target)
 }

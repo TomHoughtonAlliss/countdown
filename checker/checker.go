@@ -1,6 +1,7 @@
 package checker
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 
@@ -117,6 +118,9 @@ func (c *Checker) HandleInput(input string) (done bool, err error) {
 	case "next":
 		fmt.Print("\nSkipping\n\n")
 		done = true
+	case "quit":
+		done = true
+		err = errors.New("exited by user")
 	default:
 		solved, err := c.Expression(input)
 		if err != nil {

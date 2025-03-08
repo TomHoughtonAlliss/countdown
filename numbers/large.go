@@ -2,6 +2,7 @@ package numbers
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 	"slices"
 )
@@ -22,9 +23,15 @@ func newLargeGetter() getter {
 
 		i := rand.Intn(len(n))
 		num := n[i]
-		n = slices.Delete(n, i, i)
+		n = deleteElt(n, i)
+		fmt.Printf("length: %v\tcontents: %v\n", len(n), n)
 		return num, nil
 	}
 
 	return g
+}
+
+func deleteElt[T any](s []T, i int) []T {
+	j := i + 1
+	return slices.Delete(s, i, j)
 }

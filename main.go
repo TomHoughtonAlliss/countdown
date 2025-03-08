@@ -8,13 +8,13 @@ import (
 	"github.com/countdown/numbers"
 )
 
+const puzzleInput = "LSSSSS"
+
 func main() {
 	errString := "ERROR: %v\n"
 	var done bool = false
 
-	i := "LSSSSS"
-
-	p, err := numbers.NewPuzzle(i)
+	p, err := numbers.NewPuzzle(puzzleInput)
 	if err != nil {
 		done = true
 		fmt.Printf(errString, fmt.Errorf("failed to create puzzle: %w", err))
